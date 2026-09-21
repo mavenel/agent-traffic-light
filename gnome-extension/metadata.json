@@ -1,0 +1,9 @@
+{
+  "description": "One colored dot per AI coding session (Claude Code, Pi coding agent...) in the top bar. Green = finished/idle, orange = running, red = waiting for confirmation.",
+  "name": "PI Traffic Light",
+  "gettext-domain": "pi-traffic-light",
+  "shell-version": ["45", "46", "47", "48", "49", "50", "51"],
+  "url": "https://github.com/mavenel/pi-traffic-light",
+  "uuid": "pi-traffic-light@mavenel.fr",
+  "version": 1
+}

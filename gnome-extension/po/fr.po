@@ -1,0 +1,31 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: pi-traffic-light\n"
+"Report-Msgid-Bugs-To: https://github.com/mavenel/pi-traffic-light/issues\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+
+#: extension.js
+msgid "Waiting for confirmation"
+msgstr "En attente de confirmation"
+
+#: extension.js
+msgid "Running"
+msgstr "En cours"
+
+#: extension.js
+msgid "Finished"
+msgstr "Terminé"
+
+#: extension.js
+msgid "No active sessions"
+msgstr "Aucune session active"
+
+#: extension.js
+msgid "Window not found for this session."
+msgstr "Fenêtre introuvable pour cette session."
+
+#: metadata.json
+msgid "One colored dot per AI coding session (Claude Code, Pi coding agent...) in the top bar. Green = finished/idle, orange = running, red = waiting for confirmation."
+msgstr "Un feu tricolore par session d'IA (Claude Code, Pi coding agent...) dans la barre du haut. Vert = terminé/en attente d'une tâche, orange = en cours, rouge = attend une confirmation."

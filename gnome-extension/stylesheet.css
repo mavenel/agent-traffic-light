@@ -1,0 +1,27 @@
+.pi-indicator {
+    padding: 0;
+    margin: 0;
+}
+
+.pi-panel-box {
+    spacing: 6px;
+    padding: 0 6px;
+}
+
+.pi-panel-box-empty {
+    spacing: 0;
+    padding: 0 4px;
+}
+
+.pi-traffic-dots {
+    spacing: 5px;
+}
+
+.pi-dot {
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.pi-dot-menu {
+    margin-right: 8px;
+}
