@@ -1,6 +1,7 @@
 {
   "name": "agent-traffic-light",
   "owner": { "name": "mavenel" },
+  "description": "Self-hosted Claude Code plugin marketplace for Agent Traffic Light.",
   "plugins": [
     {
       "name": "agent-traffic-light",
