@@ -1,6 +1,6 @@
 {
-  "name": "pi-traffic-light",
-  "description": "Reports Claude Code session status to the PI Traffic Light GNOME Shell indicator.",
+  "name": "agent-traffic-light",
+  "description": "Reports Claude Code session status to the Agent Traffic Light GNOME Shell indicator.",
   "version": "1.0.0",
   "author": "mavenel",
   "license": "MIT"

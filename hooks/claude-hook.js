@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-// Claude Code hook: reports this session's state to the PI Traffic Light
+// Claude Code hook: reports this session's state to the Agent Traffic Light
 // GNOME extension by writing a small JSON file per session.
 //
 // Wired in ~/.claude/settings.json for SessionStart, UserPromptSubmit,
@@ -12,7 +12,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const STATE_DIR = path.join(os.homedir(), '.local', 'state', 'pi-traffic-light', 'sessions');
+const STATE_DIR = path.join(os.homedir(), '.local', 'state', 'agent-traffic-light', 'sessions');
 
 const STATUS_BY_HOOK = {
     SessionStart: 'finished',

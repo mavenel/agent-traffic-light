@@ -1,11 +1,11 @@
 {
-  "name": "pi-traffic-light",
+  "name": "agent-traffic-light",
   "owner": { "name": "mavenel" },
   "plugins": [
     {
-      "name": "pi-traffic-light",
+      "name": "agent-traffic-light",
       "source": "./",
-      "description": "Reports Claude Code session status to the PI Traffic Light GNOME Shell indicator."
+      "description": "Reports Claude Code session status to the Agent Traffic Light GNOME Shell indicator."
     }
   ]
 }

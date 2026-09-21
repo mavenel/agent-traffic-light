@@ -12,7 +12,7 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import { Extension, gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 const STATE_DIR = GLib.build_filenamev(
-    [GLib.get_home_dir(), '.local', 'state', 'pi-traffic-light', 'sessions']);
+    [GLib.get_home_dir(), '.local', 'state', 'agent-traffic-light', 'sessions']);
 const POLL_SECONDS = 2;
 // Safety net only: a session that stops updating (crash, kill -9) without
 // firing its cleanup hook eventually disappears instead of lingering forever.
@@ -186,7 +186,7 @@ function readSessions() {
 
 const SessionDot = GObject.registerClass(
 class SessionDot extends St.Widget {
-    _init(styleClass = 'pi-dot') {
+    _init(styleClass = 'agent-dot') {
         super._init({
             style_class: styleClass,
             width: 10,
@@ -258,7 +258,7 @@ function hexToRgb(hex) {
     };
 }
 
-export default class PiTrafficLightExtension extends Extension {
+export default class AgentTrafficLightExtension extends Extension {
     enable() {
         this._dots = new Map();
         this._dynamicCount = 0;
@@ -273,17 +273,17 @@ export default class PiTrafficLightExtension extends Extension {
         this._dirMonitor = Gio.File.new_for_path(STATE_DIR).monitor_directory(Gio.FileMonitorFlags.NONE, null);
         this._dirMonitorId = this._dirMonitor.connect('changed', () => this._captureNewSessions());
 
-        this._indicator = new PanelMenu.Button(0.0, 'PI Traffic Light', false);
+        this._indicator = new PanelMenu.Button(0.0, 'Agent Traffic Light', false);
         // The theme's default .panel-button padding stacks with our own
         // box padding below, which is what reads as a lopsided gap around
-        // the icon. Zero it out so only pi-panel-box controls the spacing.
-        this._indicator.add_style_class_name('pi-indicator');
+        // the icon. Zero it out so only agent-panel-box controls the spacing.
+        this._indicator.add_style_class_name('agent-indicator');
 
-        const box = new St.BoxLayout({ style_class: 'pi-panel-box' });
+        const box = new St.BoxLayout({ style_class: 'agent-panel-box' });
         this._box = box;
         this._icon = new TrafficLightLogo();
         this._dotsBox = new St.BoxLayout({
-            style_class: 'pi-traffic-dots',
+            style_class: 'agent-traffic-dots',
             y_align: Clutter.ActorAlign.CENTER,
         });
         box.add_child(this._icon);
@@ -293,7 +293,7 @@ export default class PiTrafficLightExtension extends Extension {
         this._emptyItem = new PopupMenu.PopupMenuItem(_('No active sessions'), { reactive: false });
         this._indicator.menu.addMenuItem(this._emptyItem);
 
-        Main.panel.addToStatusArea('pi-traffic-light', this._indicator, 1, 'right');
+        Main.panel.addToStatusArea('agent-traffic-light', this._indicator, 1, 'right');
 
         this._refresh();
         this._timeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, POLL_SECONDS, () => {
@@ -371,7 +371,7 @@ export default class PiTrafficLightExtension extends Extension {
             if (!entry) {
                 const dot = new SessionDot();
                 const menuItem = new PopupMenu.PopupMenuItem('');
-                const menuDot = new SessionDot('pi-dot pi-dot-menu');
+                const menuDot = new SessionDot('agent-dot agent-dot-menu');
                 menuItem.insert_child_at_index(menuDot, 0);
                 menuItem.connect('activate', () => {
                     // 1) The window captured automatically when this session's
@@ -382,7 +382,7 @@ export default class PiTrafficLightExtension extends Extension {
                     //    instance): fall back to pid + live title matching,
                     //    recomputed fresh every click, nothing to maintain.
                     if (!entry.pid || !activateWindowForPid(entry.pid, entry.index, entry.label))
-                        Main.notify('PI Traffic Light', _('Window not found for this session.'));
+                        Main.notify('Agent Traffic Light', _('Window not found for this session.'));
                 });
                 // Append (not insert-at-0) so both the panel and the menu
                 // show sessions in the order they actually appeared.
@@ -425,6 +425,6 @@ export default class PiTrafficLightExtension extends Extension {
         // panel button's own padding so it isn't wider than the bare icon.
         const hasSessions = sessions.length > 0;
         this._dotsBox.visible = hasSessions;
-        this._box.style_class = hasSessions ? 'pi-panel-box' : 'pi-panel-box pi-panel-box-empty';
+        this._box.style_class = hasSessions ? 'agent-panel-box' : 'agent-panel-box agent-panel-box-empty';
     }
 }

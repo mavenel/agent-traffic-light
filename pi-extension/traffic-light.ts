@@ -1,9 +1,9 @@
 /**
- * PI Traffic Light Extension
+ * Agent Traffic Light Extension
  *
- * Reports this session's activity to the PI Traffic Light GNOME extension
+ * Reports this session's activity to the Agent Traffic Light GNOME extension
  * by writing a small JSON file per session under
- * ~/.local/state/pi-traffic-light/sessions/. The GNOME extension polls that
+ * ~/.local/state/agent-traffic-light/sessions/. The GNOME extension polls that
  * directory and shows one colored dot per active session in the top bar.
  *
  * Pi has no generic "waiting for user confirmation" lifecycle event, but its
@@ -17,7 +17,7 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 
-const STATE_DIR = path.join(os.homedir(), ".local", "state", "pi-traffic-light", "sessions");
+const STATE_DIR = path.join(os.homedir(), ".local", "state", "agent-traffic-light", "sessions");
 
 type Status = "running" | "waiting" | "finished";
 

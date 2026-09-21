@@ -4,7 +4,7 @@ let
   metadata = builtins.fromJSON (builtins.readFile ./gnome-extension/metadata.json);
 in
 pkgs.stdenvNoCC.mkDerivation {
-  pname = "gnome-shell-extension-pi-traffic-light";
+  pname = "gnome-shell-extension-agent-traffic-light";
   version = toString metadata.version;
 
   src = ./gnome-extension;
@@ -33,7 +33,7 @@ pkgs.stdenvNoCC.mkDerivation {
 
   meta = {
     description = "Traffic-light indicator for AI coding agent sessions (Claude Code, Pi) in the GNOME top bar";
-    homepage = "https://github.com/mavenel/pi-traffic-light";
+    homepage = "https://github.com/mavenel/agent-traffic-light";
     license = pkgs.lib.licenses.mit;
     platforms = pkgs.lib.platforms.linux;
   };

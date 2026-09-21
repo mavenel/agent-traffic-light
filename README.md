@@ -1,4 +1,5 @@
-# PI Traffic Light
+
+# <img src="screenshots/icon.png" alt="Agent Traffic Light icon" width="30" style="vertical-align: middle"> Agent Traffic Light
 
 A GNOME Shell indicator that shows one colored dot per AI coding session
 (Claude Code, Pi coding agent) in the top bar — so you can tell at a glance
@@ -13,6 +14,10 @@ terminals and workspaces as you have open.
 Clicking a session in the menu jumps you straight to its window, even on a
 different workspace.
 
+![Panel indicator with four sessions](screenshots/panel-dots.png)
+
+![Dropdown menu listing each session's agent, project and status](screenshots/panel-menu.png)
+
 ## How it works
 
 There's no process-scanning or polling of `ps` — each agent explicitly
@@ -20,7 +25,7 @@ reports its own state:
 
 ```
 gnome-extension/     GNOME Shell extension: renders the dots and the menu,
-                      reads ~/.local/state/pi-traffic-light/sessions/*.json
+                      reads ~/.local/state/agent-traffic-light/sessions/*.json
 hooks/                Claude Code hook script (Node) that writes that state,
                       packaged as a plugin via .claude-plugin/
 pi-extension/         Pi coding agent extension (TypeScript) that does the same,
@@ -28,7 +33,7 @@ pi-extension/         Pi coding agent extension (TypeScript) that does the same,
 ```
 
 Both integrations write small JSON files to
-`~/.local/state/pi-traffic-light/sessions/`, one per session. The GNOME
+`~/.local/state/agent-traffic-light/sessions/`, one per session. The GNOME
 extension just watches that directory — it doesn't know or care which tool
 wrote the file, so adding support for another agent is just a matter of
 writing `{ agent, session, label, status, ts, pid }` to that directory
@@ -47,65 +52,43 @@ following the same convention (see either integration for the exact shape).
 
 ## Install
 
-```bash
-git clone https://github.com/mavenel/pi-traffic-light.git
-cd pi-traffic-light
-```
-
 ### 1. GNOME Shell extension
 
 ```bash
-gnome-extensions pack --force -o /tmp gnome-extension --podir=po --gettext-domain=pi-traffic-light
-gnome-extensions install /tmp/pi-traffic-light@mavenel.fr.shell-extension.zip --force
-gnome-extensions enable pi-traffic-light@mavenel.fr
+git clone https://github.com/mavenel/agent-traffic-light.git
+cd agent-traffic-light
 ```
 
-`--podir` compiles the translations in `gnome-extension/po/` with `msgfmt` (from
-`gettext`) and bundles them into the package, so the indicator's text follows
-your system language — currently English and French are translated, anything
-else falls back to English.
-
-GNOME Shell only picks up an extension's code the first time it's loaded in
-a session, so **log out and back in** after installing (on Wayland there's
-no in-place "restart Shell" shortcut equivalent to `Alt+F2` → `r`). After
-that, reinstalling an update still requires a re-login for the new code to
-take effect — `gnome-extensions info pi-traffic-light@mavenel.fr` should
-show `State: ACTIVE` (not `ERROR`) once it has.
-
-On NixOS, `default.nix` packages the extension for declarative installs
-instead:
+Requires `gettext` (provides `msgfmt`, used to bundle translations) — install
+it via your distro's package manager if you don't already have it; without it
+`pack` fails with an `msgfmt`-related error.
 
 ```bash
-nix-build
+gnome-extensions pack --force -o /tmp gnome-extension --podir=po --gettext-domain=agent-traffic-light
+gnome-extensions install /tmp/agent-traffic-light@mavenel.shell-extension.zip --force
+gnome-extensions enable agent-traffic-light@mavenel
 ```
 
-`result/share/gnome-shell/extensions/pi-traffic-light@mavenel.fr/` is the
-extension directory. Add the derivation to `environment.systemPackages` (or
-`home.packages` in home-manager) so it lands under a `share/gnome-shell/`
-path GNOME Shell scans automatically; you still need
-`gnome-extensions enable pi-traffic-light@mavenel.fr` and a re-login the
-first time.
+Then **log out and back in** — GNOME Shell only loads a new extension's code
+on session start. `gnome-extensions info agent-traffic-light@mavenel`
+should show `State: ACTIVE` once it has.
+
+On NixOS, `nix-build` (using `default.nix`) packages the extension
+declaratively instead — add the result to `environment.systemPackages` or
+`home.packages`, then `gnome-extensions enable agent-traffic-light@mavenel`
+and re-login as above.
 
 ### 2. Claude Code
 
 Packaged as a Claude Code plugin — this repo is its own self-hosted
 marketplace, so there's no separate hook script to wire up by hand.
 
-Claude Code 2.1.275+:
-
 ```bash
-claude plugin marketplace add mavenel/pi-traffic-light
-claude plugin install pi-traffic-light --marketplace mavenel/pi-traffic-light
+claude plugin marketplace add mavenel/agent-traffic-light
+claude plugin install agent-traffic-light@agent-traffic-light
 ```
 
-Older versions (check with `claude --version`):
-
-```bash
-claude plugin marketplace add mavenel/pi-traffic-light
-claude plugin install pi-traffic-light@pi-traffic-light
-```
-
-Both forms work from inside an interactive `claude` session too, as
+This works from inside an interactive `claude` session too, as
 `/plugin marketplace add ...` / `/plugin install ...`. No restart needed —
 hooks run fresh every time. Check `claude plugin list` afterward for
 `Status: ✔ enabled`.
@@ -113,7 +96,7 @@ hooks run fresh every time. Check `claude plugin list` afterward for
 ### 3. Pi coding agent
 
 ```bash
-pi install git:github.com/mavenel/pi-traffic-light
+pi install git:github.com/mavenel/agent-traffic-light
 ```
 
 Pi clones the repo and discovers the extension automatically via this
@@ -148,8 +131,8 @@ Each of the three pieces has a different edit/reload cycle:
   re-read of changed code. After every edit:
 
   ```bash
-  gnome-extensions pack --force -o /tmp gnome-extension --podir=po --gettext-domain=pi-traffic-light
-  gnome-extensions install /tmp/pi-traffic-light@mavenel.fr.shell-extension.zip --force
+  gnome-extensions pack --force -o /tmp gnome-extension --podir=po --gettext-domain=agent-traffic-light
+  gnome-extensions install /tmp/agent-traffic-light@mavenel.shell-extension.zip --force
   ```
 
   then **log out and back in** (Wayland has no `Alt+F2` → `r` equivalent).
@@ -159,22 +142,22 @@ Each of the three pieces has a different edit/reload cycle:
   restarts just the Shell process (a couple of seconds, keeps your windows
   open) instead of a full session logout.
 
-  Check `gnome-extensions info pi-traffic-light@mavenel.fr` — `State: ACTIVE`
+  Check `gnome-extensions info agent-traffic-light@mavenel` — `State: ACTIVE`
   means your latest code is loaded; `ERROR` means it crashed (check
-  `journalctl -b 0 | grep pi-traffic-light` for the stack trace, GNOME Shell
+  `journalctl -b 0 | grep agent-traffic-light` for the stack trace, GNOME Shell
   logs extension exceptions there).
 
 **Testing the display without a real agent session:** the GNOME extension
-only reads `~/.local/state/pi-traffic-light/sessions/*.json` — you can drop
+only reads `~/.local/state/agent-traffic-light/sessions/*.json` — you can drop
 fake session files there directly to see dots appear/change color without
 running `claude` or `pi` at all:
 
 ```bash
-mkdir -p ~/.local/state/pi-traffic-light/sessions
+mkdir -p ~/.local/state/agent-traffic-light/sessions
 echo '{"agent":"pi","session":"demo","label":"myproject","status":"waiting","ts":'"$(date +%s)"'}' \
-  > ~/.local/state/pi-traffic-light/sessions/pi-demo.json
+  > ~/.local/state/agent-traffic-light/sessions/pi-demo.json
 # ... and remove it when done
-rm ~/.local/state/pi-traffic-light/sessions/pi-demo.json
+rm ~/.local/state/agent-traffic-light/sessions/pi-demo.json
 ```
 
 ## Translations
@@ -184,7 +167,7 @@ The GNOME extension's on-screen text is translated via gettext, sourced from
 setting to change) and falls back to English for anything untranslated.
 Currently available: English (source strings), French (`po/fr.po`).
 
-To add a language: copy `po/pi-traffic-light.pot` to `po/<lang-code>.po`,
+To add a language: copy `po/agent-traffic-light.pot` to `po/<lang-code>.po`,
 translate each `msgstr`, and set the `Language:` header — no code changes or
 rebuild step needed beyond the normal packaging commands above.
 

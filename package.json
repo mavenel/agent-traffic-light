@@ -1,14 +1,14 @@
 {
-  "name": "pi-traffic-light",
+  "name": "agent-traffic-light",
   "version": "1.0.0",
   "private": true,
-  "description": "Reports Pi coding agent session status to the PI Traffic Light GNOME Shell indicator.",
+  "description": "Reports Pi coding agent session status to the Agent Traffic Light GNOME Shell indicator.",
   "keywords": ["pi-package"],
   "author": "mavenel",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mavenel/pi-traffic-light.git"
+    "url": "https://github.com/mavenel/agent-traffic-light.git"
   },
   "pi": {
     "extensions": ["./pi-extension"]
